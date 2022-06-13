@@ -34,11 +34,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: ngrok-tunnel
-      uses: vmactions/ngrok-tunnel@v0.0.1
-      with:
-        protocol: tcp
-        port: 2345
+      - name: Start tunnel
+        uses: overhead-actions/live-preview@main
+        with:
+          protocol: http
+          port: 2345
+          ngrok_auth_token: ${{ secrets.NGROK_AUTHTOKEN }}
 
     - name: Record
       if: always()

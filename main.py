@@ -41,8 +41,8 @@ if sys.platform == "darwin":
 z = zipfile.ZipFile("./recorder.zip")
 z.extractall()
 shutil.move("./any/Release","./executeable")
-
-command = ["./excuteable/BililiveRecorder.Cli","run","--bind","http://*:2345","output"]
+os.system(f"echo {os.listdir('./executeable')}")
+command = ["./executeable/BililiveRecorder.Cli","run","--bind","http://*:2345","output"]
 Record_Process = subprocess.Popen(command, shell=True)
 
 while Record_Process.poll() is None:
