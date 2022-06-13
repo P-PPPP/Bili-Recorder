@@ -10,14 +10,15 @@ permissions:
   contents: read
 
 jobs:
-  build-Apps:
+  Record:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest , ubuntu-18.04] 
+        os: [ubuntu-latest, ubuntu-18.04] 
         # 可以选择多个系统,每个系统代表一个Runner
         # 如 os: [ubuntu-latest, windows-latest, macOS-latest] ,详见 https://github.com/actions/virtual-environments
     runs-on: ${{ matrix.os }}
-
+    env:
+      NGROK_TOKEN : ${{ secrets.NGROK_AUTHTOKEN }}
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
@@ -27,19 +28,20 @@ jobs:
         
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v2.1.0
+      with: 
+        dotnet-version: '6.0.x'
+        include-prerelease: true
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-        
-    - name: Ngrok TCP Tunelling with different Operating sytems
-      uses: danvixent/ngrok-tunneling-action@v0.1.16
+
+    - name: ngrok-tunnel
+      uses: vmactions/ngrok-tunnel@v0.0.1
       with:
-        # The port to forward traffic to
+        protocol: tcp
         port: 2345
-        # Ngrok authorization token
-        ngrok_authtoken: ${{ secrets.NGROK_AUTHTOKEN  }}
 
     - name: Record
       if: always()

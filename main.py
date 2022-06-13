@@ -2,8 +2,8 @@
 import os , sys , subprocess , requests , time , shutil , zipfile
 from threading import Thread , Event
 
-
-assert os.path.exists("./config.json") , "config.json not found , Exiting.."
+try: assert os.path.exists("./config.json") , FileNotFoundError("config.json not found , Exiting ... ")
+except FileNotFoundError: raise SystemExit(128)
 os.path.exists('output') or os.mkdir('output')
 shutil.move("./config.json", "./output/config.json")
 timeout_event = Event()
