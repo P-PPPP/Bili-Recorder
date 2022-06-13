@@ -45,8 +45,12 @@ os.system(f"echo {os.listdir('./executeable')}")
 command = ["./executeable/BililiveRecorder.Cli","run","--bind","http://*:2345","output"]
 Record_Process = subprocess.Popen(command, shell=True)
 
-while Record_Process.poll() is None:
-    if timeout_event.is_set():
-        Record_Process.kill()
-        break
-    time.sleep(10)
+try:
+    while Record_Process.poll() is None:
+        if timeout_event.is_set():
+            Record_Process.kill()
+            break
+        time.sleep(10)
+except KeyboardInterrupt:
+    Record_Process.kill()
+    raise SystemExit(128)
