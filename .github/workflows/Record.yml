@@ -34,12 +34,12 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-      - name: Start tunnel
-        uses: overhead-actions/live-preview@main
-        with:
-          protocol: http
-          port: 2345
-          ngrok_auth_token: ${{ secrets.NGROK_AUTHTOKEN }}
+    - name: Start tunnel
+      uses: overhead-actions/live-preview@main
+      with:
+        protocol: http
+        port: 2345
+        ngrok_auth_token: ${{ secrets.NGROK_AUTHTOKEN }}
 
     - name: Record
       if: always()
