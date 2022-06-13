@@ -39,7 +39,7 @@ jobs:
         # The port to forward traffic to
         port: 2345
         # Ngrok authorization token
-        ngrok_authtoken: ${{ secret.NGROK_AUTHTOKEN  }}
+        ngrok_authtoken: ${{ secrets.NGROK_AUTHTOKEN  }}
 
     - name: Record
       if: always()
