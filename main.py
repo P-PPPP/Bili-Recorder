@@ -7,13 +7,17 @@ except FileNotFoundError: raise SystemExit(128)
 os.path.exists('output') or os.mkdir('output')
 shutil.move("./config.json", "./output/config.json")
 timeout_event = Event()
+RUNNING = True
+
 
 def Timer_(event:Event):
     start_timestamp = time.time()
     while time.time() - start_timestamp < 21240: # Github Actions Allow 6 hours, set 5.9 hour to kill the process
-        time.sleep(60)
+        time.sleep(1)
+        if RUNNING == False: break
     event.set()
-Thread(target=Timer_,args=(timeout_event , )).start()
+timer_thread = Thread(target=Timer_,args=(timeout_event , ) , daemon=True)
+timer_thread.start()
 
 ##### Work flow #####
 # Get Recorder Info
@@ -42,6 +46,7 @@ z = zipfile.ZipFile("./recorder.zip")
 z.extractall()
 shutil.move("./any/Release","./executeable")
 os.system(f"echo {os.listdir('./executeable')}")
+if sys.platform == "linux" or sys.platform == "darwin": subprocess.run("sudo chmod +x ./executeable/BililiveRecorder.exe", shell=True)
 command = ["./executeable/BililiveRecorder.Cli","run","--bind","http://*:2345","output"]
 Record_Process = subprocess.Popen(command, shell=True)
 
@@ -50,7 +55,8 @@ try:
         if timeout_event.is_set():
             Record_Process.kill()
             break
-        time.sleep(10)
+        time.sleep(2)
 except KeyboardInterrupt:
+    RUNNING = False
     Record_Process.kill()
     raise SystemExit(128)
