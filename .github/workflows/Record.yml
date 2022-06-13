@@ -1,0 +1,56 @@
+name: Record
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build-Apps:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest , ubuntu-18.04] 
+        # 可以选择多个系统,每个系统代表一个Runner
+        # 如 os: [ubuntu-latest, windows-latest, macOS-latest] ,详见 https://github.com/actions/virtual-environments
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+        
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v2.1.0
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Ngrok TCP Tunelling with different Operating sytems
+      uses: danvixent/ngrok-tunneling-action@v0.1.16
+      with:
+        # The port to forward traffic to
+        port: 2345
+        # Ngrok authorization token
+        ngrok_authtoken: ${{ secret.NGROK_AUTHTOKEN  }}
+
+    - name: Record
+      if: always()
+      run: |
+        python main.py
+        
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3.1.0
+      if: always()
+      with:
+        # Artifact name
+        name: Recorder_${{ runner.os }}
+        path: output/
+  
