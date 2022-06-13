@@ -8,12 +8,12 @@ os.path.exists('output') or os.mkdir('output')
 shutil.move("./config.json", "./output/config.json")
 timeout_event = Event()
 
-def Timer_(event):
+def Timer_(event:Event):
     start_timestamp = time.time()
     while time.time() - start_timestamp < 21240: # Github Actions Allow 6 hours, set 5.9 hour to kill the process
         time.sleep(60)
     event.set()
-Thread(target=Timer_,args=timeout_event).start()
+Thread(target=Timer_,args=(timeout_event , )).start()
 
 ##### Work flow #####
 # Get Recorder Info
