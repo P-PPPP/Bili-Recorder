@@ -35,7 +35,7 @@ jobs:
     - name: Start ZeroTier Service
       if: always()
       run: |
-        python main.py
+        python zerotier.py
       env: 
         ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
 
