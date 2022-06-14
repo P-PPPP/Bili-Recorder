@@ -34,7 +34,7 @@ z.extractall()
 shutil.move("./any/Release","./executeable")
 if sys.platform == "linux" or sys.platform == "darwin":  subprocess.run("sudo chmod +x ./executeable/BililiveRecorder.Cli", shell=True)
 command = ["./executeable/BililiveRecorder.Cli","run","--bind","http://*:2345","output"]
-Record_Process = subprocess.Popen(' '.join(command), shell=True ,stdout=subprocess.PIPE)
+Record_Process = subprocess.Popen(command,stdout=subprocess.PIPE, shell=False)
 
 while Record_Process.poll() is None:
     try:
