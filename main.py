@@ -36,7 +36,6 @@ if sys.platform == "linux" or sys.platform == "darwin":  subprocess.run("sudo ch
 command = ["./executeable/BililiveRecorder.Cli","run","--bind","http://*:2345","output"]
 Record_Process = subprocess.Popen(' '.join(command), shell=True)
 
-
 while Record_Process.poll() is None:
     try:
         if timeout_event.is_set():
@@ -44,6 +43,7 @@ while Record_Process.poll() is None:
             break
         time.sleep(2)
     except KeyboardInterrupt:
+        os.system("echo '\nKeyboardInterrupt Pressed'")
         RUNNING = False
         Record_Process.terminate()
         raise SystemExit(128)
