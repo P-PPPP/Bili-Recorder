@@ -43,7 +43,8 @@ while Record_Process.poll() is None:
             break
         time.sleep(2)
     except KeyboardInterrupt:
-        os.system("echo '\nKeyboardInterrupt Pressed'")
+        os.system("echo KeyboardInterrupt Pressed") 
         RUNNING = False
         Record_Process.terminate()
+        Record_Process.wait()
         raise SystemExit(128)
