@@ -1,10 +1,6 @@
 # -- encoding: utf-8 --
 import os , sys , subprocess , requests , time , shutil , zipfile
 from threading import Thread , Event
-import zerotier
-
-zerotier.Download_And_instal()
-zerotier.Main()
 
 try: assert os.path.exists("./config.json") , FileNotFoundError("config.json not found , Exiting ... ")
 except FileNotFoundError: raise SystemExit(128)

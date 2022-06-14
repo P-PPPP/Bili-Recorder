@@ -32,12 +32,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Record
+    - name: Start ZeroTier Service
       if: always()
       run: |
         python main.py
       env: 
         ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
+
+    - name: Record
+      if: always()
+      run: |
+        python main.py
         
     - name: Upload Recorded
       uses: actions/upload-artifact@v3.1.0
