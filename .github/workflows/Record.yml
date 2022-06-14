@@ -14,8 +14,6 @@ jobs:
         # 可以选择多个系统,每个系统代表一个Runner
         # 如 os: [ubuntu-latest, windows-latest, macOS-latest] ,详见 https://github.com/actions/virtual-environments
     runs-on: ${{ matrix.os }}
-    env:
-      NGROK_TOKEN : ${{ secrets.NGROK_AUTHTOKEN }}
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python 3.10
@@ -34,19 +32,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Start tunnel
-      uses: overhead-actions/live-preview@main
-      with:
-        protocol: http
-        port: 2345
-        ngrok_auth_token: ${{ secrets.NGROK_AUTHTOKEN }}
-
     - name: Record
       if: always()
       run: |
         python main.py
+      env: 
+        ZEROTIER_NETWORK_ID: ${{ secrets.ZEROTIER_NETWORK_ID }}
         
-    - name: Upload a Build Artifact
+    - name: Upload Recorded
       uses: actions/upload-artifact@v3.1.0
       if: always()
       with:
