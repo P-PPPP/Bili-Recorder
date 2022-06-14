@@ -32,7 +32,7 @@ with requests.get(download_url, stream=True) as r:
 z = zipfile.ZipFile("./recorder.zip")
 z.extractall()
 shutil.move("./any/Release","./executeable")
-if sys.platform == "linux" or sys.platform == "darwin":  subprocess.run("sudo chmod +x ./executeable/BililiveRecorder.Cli", shell=False)
+if sys.platform == "linux" or sys.platform == "darwin":  subprocess.run("sudo chmod +x ./executeable/BililiveRecorder.Cli", shell=True)
 command = ["./executeable/BililiveRecorder.Cli","run","--bind","http://*:2345","output"]
 Record_Process = subprocess.Popen(' '.join(command), shell=True ,stdout=subprocess.PIPE)
 
